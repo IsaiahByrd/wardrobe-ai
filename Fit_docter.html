@@ -68,7 +68,7 @@
     .hero {
       margin-top:8px;
       padding:100px 0;
-      background:url("https://images.unsplash.com/photo-1618354691321-9a4199114ef2?auto=format&fit=crop&w=1600&q=80") center/cover no-repeat;
+      background:url("https://images.unsplash.com/photo-1521334884684-d80222895322?auto=format&fit=crop&w=1600&q=80") center/cover no-repeat;
       color:white;
       position:relative;
     }
@@ -84,8 +84,8 @@
       text-align:center;
       padding:18px;
     }
-    .hero h1{color:white;font-size:2rem;margin-bottom:12px}
-    .hero p{color:#f3f4f6;max-width:640px;margin:0 auto 18px}
+    .hero h1{color:white;font-size:2.3rem;margin-bottom:14px}
+    .hero p{color:#f3f4f6;max-width:640px;margin:0 auto 20px}
     .cta {
       background:var(--accent);
       color:white;
@@ -218,19 +218,30 @@
     .download-button:disabled{background:#9ca3af;cursor:not-allowed}
 
     /* Features */
-    .feature-images{
+    .features-grid{
       margin-top:30px;
       display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
       gap:20px;
     }
-    .feature-images img{
-      width:100%;
-      border-radius:12px;
-      box-shadow:0 8px 24px rgba(0,0,0,0.12);
-      object-fit:cover;
-      height:260px;
+    .feature-card{
+      background:white;
+      border-radius:var(--radius);
+      overflow:hidden;
+      box-shadow:0 8px 24px rgba(0,0,0,0.1);
+      display:flex;
+      flex-direction:column;
     }
+    .feature-card img{
+      width:100%;
+      height:200px;
+      object-fit:cover;
+    }
+    .feature-card div{
+      padding:16px;
+    }
+    .feature-card h3{margin:0 0 8px}
+    .feature-card p{margin:0;color:var(--muted);font-size:0.9rem}
 
     /* Contact + Footer */
     .contact form{
@@ -333,16 +344,38 @@
     </section>
 
     <!-- Features -->
-    <section id="features" class="fade-in" style="padding:30px 0 48px;">
+    <section id="features" class="fade-in" style="padding:40px 0;">
       <div class="container">
         <h2 style="text-align:center; margin-bottom:12px;">Why Choose FitDoctor?</h2>
-        <p style="text-align:center; color:var(--muted); max-width:860px; margin:0 auto 18px">
+        <p style="text-align:center; color:var(--muted); max-width:860px; margin:0 auto 30px">
           Realistic virtual try-ons with a privacy-first approach. Fast, lightweight, and built for confident shopping.
         </p>
-        <div class="feature-images">
-          <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=800&q=80" alt="Shopping online experience" loading="lazy">
-          <img src="https://images.unsplash.com/photo-1618354691208-b72d26bb5bb7?auto=format&fit=crop&w=800&q=80" alt="Modern clothing store" loading="lazy">
-          <img src="https://images.unsplash.com/photo-1542060748-10c28b62716c?auto=format&fit=crop&w=800&q=80" alt="Fashion lifestyle try-on" loading="lazy">
+        
+        <div class="features-grid">
+          <!-- Card 1 -->
+          <div class="feature-card">
+            <img src="https://images.unsplash.com/photo-1618354691208-b72d26bb5bb7?auto=format&fit=crop&w=800&q=80" alt="Modern clothing store" loading="lazy">
+            <div>
+              <h3>Modern Clothing Store</h3>
+              <p>Discover outfits in a sleek shopping environment enhanced by AI-powered visuals.</p>
+            </div>
+          </div>
+          <!-- Card 2 -->
+          <div class="feature-card">
+            <img src="https://images.unsplash.com/photo-1542060748-10c28b62716c?auto=format&fit=crop&w=800&q=80" alt="Fashion lifestyle try-on" loading="lazy">
+            <div>
+              <h3>Fashion Lifestyle Try-On</h3>
+              <p>See how your style fits into real-world looks — instantly and confidently.</p>
+            </div>
+          </div>
+          <!-- Card 3 -->
+          <div class="feature-card">
+            <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=800&q=80" alt="Shopping online" loading="lazy">
+            <div>
+              <h3>Smarter Online Shopping</h3>
+              <p>Shop online with confidence, knowing exactly how clothes will look on you.</p>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -412,7 +445,7 @@
         status.textContent="Done!";
         placeholder.style.display="none";
         result.style.display="block";
-        result.src="https://images.unsplash.com/photo-1582719471137-c3967ffb1c5e?auto=format&fit=crop&w=400&q=80"; // realistic mock result
+        result.src="https://images.unsplash.com/photo-1582719471137-c3967ffb1c5e?auto=format&fit=crop&w=400&q=80"; // mock result
         download.disabled=false;
       },2000);
     });
