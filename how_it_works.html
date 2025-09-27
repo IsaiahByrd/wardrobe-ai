@@ -1,0 +1,185 @@
+<!doctype html> 
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>FitDoctor — How It Works</title>
+
+  <!-- Inter font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg: #fbfdfe;
+      --card: #ffffff;
+      --muted: #667085;
+      --text: #0f1724;
+      --accent: #00bfa6;
+      --shadow: rgba(15,23,36,0.06);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
+      background:var(--bg);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.5;
+      font-size:16px;
+    }
+
+    .container{
+      width:90%;
+      max-width:900px;
+      margin:0 auto;
+      padding: 24px 0;
+    }
+
+    header{
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(6px);
+      border-bottom:1px solid #eef2f6;
+      position:sticky;
+      top:0;
+      z-index:40;
+    }
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:1rem;
+      padding:14px 0;
+    }
+    .logo{
+      font-weight:700;
+      font-size:1.15rem;
+      color:var(--text);
+      text-decoration:none;
+    }
+    nav ul{
+      display:flex;
+      gap:18px;
+      align-items:center;
+      margin:0;
+      padding:0;
+      list-style:none;
+    }
+    nav a{
+      color:var(--text);
+      text-decoration:none;
+      font-weight:600;
+      font-size:0.95rem;
+      opacity:0.9;
+    }
+    nav a:hover{color:var(--accent)}
+
+    h1{
+      font-size:2rem;
+      margin-bottom:12px;
+      font-weight:700;
+      text-align:center;
+    }
+    h2{
+      font-size:1.3rem;
+      font-weight:600;
+      margin-top:24px;
+      margin-bottom:8px;
+      color:var(--text);
+    }
+    p{
+      color:var(--muted);
+      font-size:1rem;
+      line-height:1.6;
+      margin-bottom:16px;
+    }
+    ul.steps-list{
+      list-style-type: decimal;
+      margin-left: 20px;
+      color:var(--muted);
+      font-size:1rem;
+      line-height:1.5;
+    }
+    ul.steps-list li{
+      margin-bottom: 12px;
+    }
+
+    footer{
+      margin-top:44px;
+      padding:26px 0;
+      text-align:center;
+      color:var(--muted);
+      font-size:0.92rem;
+    }
+
+    a.back-link {
+      display: inline-block;
+      margin-top: 20px;
+      color: var(--accent);
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 0.95rem;
+    }
+    a.back-link:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 600px){
+      h1{
+        font-size:1.6rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container topbar">
+      <a class="logo" href="index.html">FitDoctor</a>
+      <nav>
+        <ul>
+          <li><a href="how-it-works.html" aria-current="page">How It Works</a></li>
+          <li><a href="index.html#features">Features</a></li>
+          <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <h1>How FitDoctor Virtual Try-On Works</h1>
+      
+      <h2>1. Upload Your Photos</h2>
+      <p>Start by uploading a clear, full-body photo of yourself along with an image of the clothing item you want to try on. For best results, ensure your photo has good lighting and the clothing image has a plain background.</p>
+      
+      <h2>2. AI Processing</h2>
+      <p>Our advanced AI algorithms analyze both images to blend the clothing realistically onto your photo. This process takes just a few moments.</p>
+      
+      <h2>3. View & Download</h2>
+      <p>Once processed, you’ll see the virtual try-on result instantly. You can then download the image to share or save your new look.</p>
+
+      <h2>Why Choose FitDoctor?</h2>
+      <ul class="steps-list">
+        <li>Privacy-first approach — your photos stay on your device unless you choose to share.</li>
+        <li>Fast and lightweight, no heavy software required.</li>
+        <li>Realistic, high-quality virtual try-ons.</li>
+      </ul>
+
+      <a href="index.html" class="back-link">&larr; Back to Home</a>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      &copy; <span id="year"></span> FitDoctor — privacy-first virtual try-ons.
+    </div>
+  </footer>
+
+  <script>
+    // set footer year
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
