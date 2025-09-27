@@ -333,8 +333,7 @@
       <a class="logo" href="#">FitDoctor</a>
       <nav>
         <ul>
-
-          <li><a href="how-it-works.html">How It Works</a></li>
+          <li><a href="#how-it-works">How It Works</a></li>
           <li><a href="#features">Features</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
@@ -460,12 +459,15 @@
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // fade-in
+    // fade-in animation
     document.addEventListener('DOMContentLoaded', () => {
       const faders = document.querySelectorAll('.fade-in');
       const obs = new IntersectionObserver((entries, o) => {
         entries.forEach(e => {
-          if (e.isIntersecting){ e.target.classList.add('visible'); o.unobserve(e.target); }
+          if (e.isIntersecting){ 
+            e.target.classList.add('visible'); 
+            o.unobserve(e.target); 
+          }
         });
       }, {threshold:0.15});
       faders.forEach(f => obs.observe(f));
@@ -473,9 +475,57 @@
       if (hero) hero.classList.add('visible');
     });
 
-    // Upload previews + enable processing
-    const personInput = document.getElementById('person-image-upload');
-    const clothingInput = document.getElementById('clothing-image-upload');
-    const personPreview = document.getElementById('person-image-preview');
-    const clothingPreview = document.getElementById('clothing-image-preview');
-    const
+    // Upload preview
+    function handleUpload(input, previewId){
+      const preview = document.getElementById(previewId);
+      const file = input.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = e => {
+        preview.innerHTML = `<img src="${e.target.result}" alt="preview">`;
+      };
+      reader.readAsDataURL(file);
+      checkReady();
+    }
+
+    function checkReady(){
+      const personReady = document.getElementById('person-image-upload').files.length>0;
+      const clothingReady = document.getElementById('clothing-image-upload').files.length>0;
+      document.getElementById('process-button').disabled = !(personReady && clothingReady);
+    }
+
+    document.getElementById('person-image-upload').addEventListener('change',function(){handleUpload(this,'person-image-preview')});
+    document.getElementById('clothing-image-upload').addEventListener('change',function(){handleUpload(this,'clothing-image-preview')});
+
+    // Process button (demo simulation)
+    document.getElementById('process-button').addEventListener('click',()=>{
+      const status = document.getElementById('processing-status');
+      const button = document.getElementById('process-button');
+      status.innerHTML = '<span class="spinner"></span> Generating result...';
+      button.disabled = true;
+
+      setTimeout(()=>{
+        const resultImage = document.getElementById('result-image');
+        const placeholder = document.getElementById('result-placeholder');
+        const downloadButton = document.getElementById('download-button');
+        placeholder.style.display='none';
+        resultImage.style.display='block';
+        resultImage.src='https://via.placeholder.com/360x420.png?text=Virtual+Try-On+Result';
+        downloadButton.disabled=false;
+        status.textContent='Done!';
+        button.disabled=false;
+      },2400);
+    });
+
+    // Download button
+    document.getElementById('download-button').addEventListener('click',()=>{
+      const resultImage = document.getElementById('result-image');
+      if (!resultImage.src) return;
+      const a = document.createElement('a');
+      a.href=resultImage.src;
+      a.download='tryon-result.png';
+      a.click();
+    });
+  </script>
+</body>
+</html>
