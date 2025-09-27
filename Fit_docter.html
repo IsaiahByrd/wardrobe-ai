@@ -354,7 +354,7 @@
         <div class="features-grid">
           <!-- Card 1 -->
           <div class="feature-card">
-            <img src="https://images.unsplash.com/photo-1618354691208-b72d26bb5bb7?auto=format&fit=crop&w=800&q=80" alt="Modern clothing store" loading="lazy">
+            <img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=800&q=80" alt="Modern clothing store" loading="lazy">
             <div>
               <h3>Modern Clothing Store</h3>
               <p>Discover outfits in a sleek shopping environment enhanced by AI-powered visuals.</p>
@@ -362,7 +362,7 @@
           </div>
           <!-- Card 2 -->
           <div class="feature-card">
-            <img src="https://images.unsplash.com/photo-1542060748-10c28b62716c?auto=format&fit=crop&w=800&q=80" alt="Fashion lifestyle try-on" loading="lazy">
+            <img src="https://images.unsplash.com/photo-1521334884684-d80222895322?auto=format&fit=crop&w=800&q=80" alt="Fashion lifestyle try-on" loading="lazy">
             <div>
               <h3>Fashion Lifestyle Try-On</h3>
               <p>See how your style fits into real-world looks — instantly and confidently.</p>
@@ -445,17 +445,29 @@
         status.textContent="Done!";
         placeholder.style.display="none";
         result.style.display="block";
-        result.src="https://images.unsplash.com/photo-1582719471137-c3967ffb1c5e?auto=format&fit=crop&w=400&q=80"; // mock result
+        // Just show the clothing photo for demo
+        const clothingFile=document.getElementById('clothing-image-upload').files[0];
+        if(clothingFile){
+          const reader=new FileReader();
+          reader.onload=e=>{
+            result.src=e.target.result;
+          };
+          reader.readAsDataURL(clothingFile);
+        }
         download.disabled=false;
       },2000);
     });
 
-    // Download result
+    // Download
     document.getElementById('download-button').addEventListener('click',()=>{
-      const link=document.createElement('a');
-      link.href=document.getElementById('result-image').src;
-      link.download="try-on-result.png";
-      link.click();
+      const result=document.getElementById('result-image');
+      if(!result.src) return;
+      const a=document.createElement('a');
+      a.href=result.src;
+      a.download='fitdoctor-tryon.png';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
     });
   </script>
 </body>
