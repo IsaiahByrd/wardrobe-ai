@@ -1,242 +1,579 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>FitDoctor.tech - Your Virtual Fitness Doctor</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>FitDoctor — Virtual Try-On</title>
+
+  <!-- Inter font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
   <style>
-    /* Reset & base */
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Poppins', sans-serif;
+    :root{
+      --bg: #fbfdfe;
+      --card: #ffffff;
+      --muted: #667085;
+      --text: #0f1724;
+      --accent: #00bfa6;
+      --shadow: rgba(15,23,36,0.06);
     }
 
-    body {
-      background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-      color: #fff;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem;
-      text-align: center;
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
+      background:var(--bg);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.5;
+      font-size:16px;
     }
 
-    header {
-      margin-bottom: 2rem;
+    .container{
+      width:90%;
+      max-width:1180px;
+      margin:0 auto;
     }
 
-    header h1 {
-      font-size: 3rem;
-      font-weight: 700;
-      letter-spacing: 2px;
-      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    /* ---------- Header ---------- */
+    header{
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(6px);
+      border-bottom:1px solid #eef2f6;
+      position:sticky;
+      top:0;
+      z-index:40;
+    }
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:1rem;
+      padding:14px 0;
+    }
+    .logo{
+      font-weight:700;
+      font-size:1.15rem;
+      color:var(--text);
+      text-decoration:none;
+    }
+    nav ul{
+      display:flex;
+      gap:18px;
+      align-items:center;
+      margin:0;
+      padding:0;
+      list-style:none;
+    }
+    nav a{
+      color:var(--text);
+      text-decoration:none;
+      font-weight:600;
+      font-size:0.95rem;
+      opacity:0.9;
+    }
+    nav a:hover{color:var(--accent)}
+
+    /* ---------- Hero ---------- */
+    .hero{
+      margin-top:8px;
+      padding:48px 0;
+      background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.6));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:320px;
+    }
+    .hero-inner{
+      text-align:center;
+      padding:18px;
+    }
+    .hero h1{
+      font-size:2.25rem;
+      margin:0 0 8px;
+      font-weight:700;
+    }
+    .hero p{color:var(--muted); margin:0 0 18px}
+    .cta{
+      display:inline-block;
+      background:var(--accent);
+      color:white;
+      padding:10px 18px;
+      border-radius:999px;
+      border:0;
+      font-weight:600;
+      cursor:pointer;
+      box-shadow:0 6px 18px rgba(0,0,0,0.08);
+      transition:transform .18s ease, box-shadow .18s ease;
+    }
+    .cta:hover{ transform:translateY(-3px); box-shadow:0 10px 28px rgba(0,0,0,0.12); }
+
+    /* ---------- Try-on area (grid) ---------- */
+    .try-on-section{
+      padding:36px 0;
+      background: linear-gradient(180deg,#fbfdfe,#ffffff);
+      border-top:1px solid #f0f4f7;
     }
 
-    header p {
-      font-size: 1.2rem;
-      margin-top: 0.5rem;
-      color: #e0e0e0;
+    /* grid: left intro / center uploads / right result */
+    .tryon-grid{
+      display:grid;
+      grid-template-columns: 220px 1fr 360px;
+      gap:24px;
+      align-items:start;
     }
 
-    form {
-      background: rgba(255, 255, 255, 0.1);
-      padding: 2rem;
-      border-radius: 15px;
-      max-width: 400px;
-      width: 100%;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
-      backdrop-filter: blur(10px);
-      transition: background 0.3s ease;
+    /* left intro */
+    .tryintro{
+      padding-top:8px;
+    }
+    .tryintro h2{
+      font-size:1.05rem;
+      margin:0 0 8px;
+      font-weight:700;
+    }
+    .tryintro p{
+      color:var(--muted);
+      font-size:0.95rem;
+      margin:0;
+    }
+    .tryintro .note{
+      margin-top:18px;
+      font-size:0.875rem;
+      color:var(--muted);
+      border-left:3px solid var(--accent);
+      padding-left:10px;
     }
 
-    form:hover {
-      background: rgba(255, 255, 255, 0.15);
+    /* center: uploads */
+    .upload-column{
+      display:flex;
+      flex-direction:column;
+      gap:16px;
     }
 
-    label {
-      display: block;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-      font-size: 1.1rem;
-      color: #f0f0f0;
-      text-align: left;
+    .upload-card{
+      background:var(--card);
+      border-radius:12px;
+      padding:16px;
+      box-shadow: 0 8px 24px var(--shadow);
+      border:1px solid #eef3f7;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .upload-card h3{ margin:0; font-size:0.98rem; font-weight:700 }
+    .image-preview{
+      height:160px;
+      border-radius:8px;
+      background:#fbfdff;
+      border:1px dashed #e0e6ea;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--muted);
+      overflow:hidden;
+    }
+    .image-preview img{ max-width:100%; max-height:100%; display:block; object-fit:cover }
+
+    .file-input{ display:none }
+    .upload-button{
+      display:inline-block;
+      background:#0b6b58;
+      color:white;
+      padding:8px 12px;
+      border-radius:8px;
+      cursor:pointer;
+      font-weight:600;
+      border:none;
+      transition:transform .12s ease;
+      width:max-content;
+    }
+    .upload-button:hover{ transform:translateY(-2px) }
+
+    .upload-tip{ color:var(--muted); font-size:0.88rem }
+
+    /* controls under uploads */
+    .controls{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      margin-top:6px;
+    }
+    .process-button{
+      background:var(--accent);
+      color:white;
+      padding:10px 14px;
+      border-radius:10px;
+      border:0;
+      font-weight:600;
+      cursor:pointer;
+      box-shadow:0 6px 18px rgba(0,0,0,0.06);
+      transition:transform .12s ease,opacity .12s ease;
+    }
+    .process-button[disabled]{ opacity:0.55; cursor:not-allowed; transform:none; box-shadow:none }
+
+    .status { color:var(--muted); font-size:0.93rem; margin-left:auto }
+
+    /* right: result card */
+    .result-column h3{ margin:0 0 10px; font-weight:700; font-size:1rem }
+    .result-card{
+      background:var(--card);
+      padding:14px;
+      border-radius:12px;
+      box-shadow:0 8px 24px var(--shadow);
+      border:1px solid #eef3f7;
+      min-height:240px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      align-items:center;
+      justify-content:center;
+    }
+    .result-card .placeholder{
+      color:var(--muted);
+      font-size:0.95rem;
+      text-align:center;
+    }
+    .result-card img{
+      max-width:100%;
+      max-height:340px;
+      border-radius:8px;
+      display:block;
     }
 
-    input[type="file"] {
-      width: 100%;
-      padding: 0.5rem;
-      border-radius: 10px;
-      border: none;
-      cursor: pointer;
-      font-size: 1rem;
-      background: #4b6cb7;
-      color: #fff;
-      transition: background 0.3s ease;
+    .download-button{
+      margin-top:6px;
+      padding:8px 14px;
+      background:#222;
+      color:#fff;
+      border-radius:8px;
+      border:0;
+      font-weight:600;
+      cursor:pointer;
+    }
+    .download-button[disabled]{ opacity:0.6; cursor:not-allowed }
+
+    /* features / steps area */
+    .steps{
+      margin:34px auto 6px;
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+      gap:16px;
+      max-width:920px;
+    }
+    .step{
+      background:var(--card);
+      padding:18px;
+      border-radius:12px;
+      text-align:center;
+      box-shadow:0 8px 22px var(--shadow);
+    }
+    .step .num{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:36px;height:36px;border-radius:999px;background:var(--accent);color:white;font-weight:700;margin-bottom:12px;
+    }
+    .step h4{ margin:0 0 8px;font-size:1rem }
+    .step p{ margin:0;color:var(--muted); font-size:0.92rem }
+
+    /* footer */
+    footer{
+      margin-top:44px;
+      padding:26px 0;
+      text-align:center;
+      color:var(--muted);
+      font-size:0.92rem;
     }
 
-    input[type="file"]:hover {
-      background: #3a549c;
+    /* small states / spinner */
+    .spinner{
+      width:18px;height:18px;border-radius:50%;
+      border:3px solid rgba(0,0,0,0.08);
+      border-top-color:var(--accent);
+      animation:spin .9s linear infinite;
+      display:inline-block;
+    }
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    /* animations: fade-in (used earlier) */
+    .fade-in{opacity:0;transform:translateY(14px);transition:opacity .8s ease,transform .8s ease}
+    .fade-in.visible{opacity:1;transform:none}
+
+    /* responsive */
+    @media (max-width: 1050px){
+      .tryon-grid{ grid-template-columns: 1fr 560px; }
+      .tryintro{ order: -1 } /* keep intro above uploads on mid sizes */
+      .try-on-section{ padding:28px 0;}
     }
 
-    button {
-      margin-top: 1.5rem;
-      width: 100%;
-      padding: 0.75rem;
-      background: #ff6f61;
-      border: none;
-      border-radius: 10px;
-      font-size: 1.25rem;
-      font-weight: 700;
-      color: #fff;
-      cursor: pointer;
-      box-shadow: 0 5px 15px rgba(255, 111, 97, 0.6);
-      transition: background 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    button:hover {
-      background: #e85b50;
-      box-shadow: 0 8px 25px rgba(232, 91, 80, 0.8);
-    }
-
-    #preview {
-      margin-top: 2rem;
-      max-width: 350px;
-      border-radius: 15px;
-      overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-      background: #fff;
-      color: #333;
-      display: none;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    #preview img {
-      width: 100%;
-      display: block;
-    }
-
-    #preview p {
-      padding: 1rem;
-      font-weight: 600;
-    }
-
-    /* Clothes gallery styles */
-    #clothesGallery {
-      margin-top: 3rem;
-      max-width: 900px;
-      width: 100%;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 1.5rem;
-      padding: 0 1rem;
-    }
-
-    .clothes-item {
-      background: rgba(255, 255, 255, 0.15);
-      border-radius: 15px;
-      overflow: hidden;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-      cursor: pointer;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .clothes-item:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
-    }
-
-    .clothes-item img {
-      width: 100%;
-      display: block;
-      border-bottom: 3px solid #ff6f61;
-      object-fit: cover;
-      height: 240px;
-    }
-
-    .clothes-item p {
-      padding: 0.75rem 1rem;
-      font-weight: 700;
-      color: #fff;
-      background: linear-gradient(90deg, #ff6f61, #e85b50);
-      margin: 0;
-      user-select: none;
-    }
-
-    footer {
-      margin-top: 3rem;
-      font-size: 0.9rem;
-      color: #ddd;
-      user-select: none;
+    @media (max-width: 820px){
+      .tryon-grid{ grid-template-columns:1fr; }
+      .tryintro{ order: 0; margin-bottom:8px }
+      .upload-column{ order:1 }
+      .result-column{ order:2 }
+      .hero h1{font-size:1.6rem}
     }
   </style>
 </head>
 <body>
-
   <header>
-    <h1>FitDoctor.tech</h1>
-    <p>Your Virtual Fitness Doctor - Upload your photo and see the transformation!</p>
+    <div class="container topbar">
+      <a class="logo" href="#">FitDoctor</a>
+      <nav>
+        <ul>
+          <li><a href="#how-it-works">How It Works</a></li>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
   </header>
 
-  <form id="photoForm">
-    <label for="photoUpload">Choose a photo of yourself</label>
-    <input type="file" id="photoUpload" accept="image/*" required />
-    <button type="submit">Generate Fit Doctor Preview</button>
-  </form>
+  <main>
+    <!-- hero -->
+    <section class="hero fade-in">
+      <div class="container hero-inner">
+        <h1>Experience Virtual Try-On Like Never Before</h1>
+        <p>Upload your photo and a clothing image — see how it looks instantly.</p>
+        <button class="cta" onclick="document.getElementById('tryon').scrollIntoView({behavior:'smooth'});">Try It Now</button>
+      </div>
+    </section>
 
-  <div id="preview">
-    <img id="previewImage" alt="User uploaded photo preview" />
-    <p>Here's your FitDoctor-generated image!</p>
-  </div>
+    <!-- try-on section -->
+    <section id="tryon" class="try-on-section fade-in">
+      <div class="container tryon-grid">
+        <!-- left intro -->
+        <div class="tryintro">
+          <h2>Your Virtual Fitting Room</h2>
+          <p>Upload two images below to see the magic happen.</p>
+          <div class="note">Tip: for best results use a full-body photo with good lighting and a clothing image on a plain background.</div>
+        </div>
 
-  <section id="clothesGallery" aria-label="Gallery of clothes options">
-    <div class="clothes-item" tabindex="0">
-      <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=600&q=80" alt="Red sporty jacket" />
-      <p>Sporty Red Jacket</p>
-    </div>
-    <div class="clothes-item" tabindex="0">
-      <img src="https://images.unsplash.com/photo-1520975699182-c1e66168b865?auto=format&fit=crop&w=600&q=80" alt="Blue hoodie" />
-      <p>Comfy Blue Hoodie</p>
-    </div>
-    <div class="clothes-item" tabindex="0">
-      <img src="https://images.unsplash.com/photo-1503342452485-86e69a7a4f4a?auto=format&fit=crop&w=600&q=80" alt="Black tank top" />
-      <p>Black Tank Top</p>
-    </div>
-    <div class="clothes-item" tabindex="0">
-      <img src="data:image/webp;base64,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" />
-      <p>White Running Shoes</p>
-    </div>
-    <div class="clothes-item" tabindex="0">
-      <img src="https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=600&q=80" alt="Gray sweatpants" />
-      <p>Gray Sweatpants</p>
-    </div>
-    <div class="clothes-item" tabindex="0">
-      <img src="https://images.unsplash.com/photo-1526406915894-57f8e6b1de2a?auto=format&fit=crop&w=600&q=80" alt="Green workout shirt" />
-      <p>Green Workout Shirt</p>
-    </div>
-  </section>
+        <!-- center: uploads -->
+        <div class="upload-column">
+          <!-- person -->
+          <div class="upload-card" id="person-card">
+            <h3>1. Your Photo</h3>
+            <div class="image-preview" id="person-image-preview"><span>No image selected</span></div>
+            <input class="file-input" id="person-image-upload" accept="image/*" type="file">
+            <label class="upload-button" for="person-image-upload">Upload Your Photo</label>
+            <div class="upload-tip">Ensure good lighting — full body visible for best results.</div>
+          </div>
+
+          <!-- clothing -->
+          <div class="upload-card" id="clothing-card">
+            <h3>2. Clothing Photo</h3>
+            <div class="image-preview" id="clothing-image-preview"><span>No image selected</span></div>
+            <input class="file-input" id="clothing-image-upload" accept="image/*" type="file">
+            <label class="upload-button" for="clothing-image-upload">Upload Clothing Photo</label>
+            <div class="upload-tip">Clothing should be clear — plain background preferred.</div>
+          </div>
+
+          <!-- controls -->
+          <div style="display:flex; align-items:center; gap:12px;">
+            <button id="process-button" class="process-button" disabled>Generate Try-On</button>
+            <div class="status" id="processing-status" aria-live="polite"></div>
+          </div>
+        </div>
+
+        <!-- right: result -->
+        <div class="result-column">
+          <h3>Your Virtual Try-On Result</h3>
+          <div class="result-card" id="result-card">
+            <div id="result-placeholder" class="placeholder">
+              Your generated image will appear here.
+            </div>
+            <img id="result-image" alt="Virtual try-on result" style="display:none">
+            <button id="download-button" class="download-button" disabled>Download Result</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- steps below -->
+      <div class="container" style="margin-top:28px">
+        <div class="steps">
+          <div class="step">
+            <div class="num">1</div>
+            <h4>Upload Images</h4>
+            <p>Provide a clear photo of yourself and the clothing item you want to try.</p>
+          </div>
+          <div class="step">
+            <div class="num">2</div>
+            <h4>AI Processes</h4>
+            <p>Our AI analyzes both images and blends the clothing onto your photo.</p>
+          </div>
+          <div class="step">
+            <div class="num">3</div>
+            <h4>View & Download</h4>
+            <p>See the result — then save or share your look.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- features -->
+    <section id="features" class="fade-in" style="padding:30px 0 48px;">
+      <div class="container">
+        <h2 style="text-align:center; margin-bottom:12px;">Why Choose FitDoctor?</h2>
+        <p style="text-align:center; color:var(--muted); max-width:860px; margin:0 auto 18px">
+          Realistic virtual try-ons with a privacy-first approach. Fast, lightweight, and built for confident shopping.
+        </p>
+      </div>
+    </section>
+
+    <!-- contact -->
+    <section id="contact" class="fade-in" style="padding:28px 0 60px;">
+      <div class="container">
+        <h2 style="text-align:center; margin-bottom:12px;">Get in Touch</h2>
+        <p style="text-align:center; color:var(--muted); margin:0 0 12px;">Questions or feedback? Send us a message.</p>
+        <form class="contact-form" onsubmit="event.preventDefault(); alert('Thanks — message sent (demo).');">
+          <input type="text" placeholder="Your name" required style="padding:10px;border-radius:8px;border:1px solid #e6eef2">
+          <input type="email" placeholder="Your email" required style="padding:10px;border-radius:8px;border:1px solid #e6eef2">
+          <textarea placeholder="Your message" rows="4" style="padding:10px;border-radius:8px;border:1px solid #e6eef2"></textarea>
+          <button class="cta" type="submit" style="align-self:flex-start">Send Message</button>
+        </form>
+      </div>
+    </section>
+  </main>
 
   <footer>
-    &copy; 2025 FitDoctor.tech &nbsp; | &nbsp; Crafted with care 💪
+    <div class="container">
+      <div style="max-width:880px;margin:0 auto;color:var(--muted);font-size:0.92rem">
+        &copy; <span id="year"></span> FitDoctor — privacy-first virtual try-ons.
+      </div>
+    </div>
   </footer>
 
   <script>
-    const form = document.getElementById('photoForm');
-    const photoInput = document.getElementById('photoUpload');
-    const preview = document.getElementById('preview');
-    const previewImage = document.getElementById('previewImage');
+    // set footer year
+    document.getElementById('year').textContent = new Date().getFullYear();
 
-    form.addEventListener('submit', e => {
-      e.preventDefault();
+    // Fade-in on scroll + hero immediate
+    document.addEventListener('DOMContentLoaded', () => {
+      const faders = document.querySelectorAll('.fade-in');
+      const obs = new IntersectionObserver((entries, o) => {
+        entries.forEach(e => {
+          if (e.isIntersecting){ e.target.classList.add('visible'); o.unobserve(e.target); }
+        });
+      }, {threshold:0.15});
+      faders.forEach(f => obs.observe(f));
 
-      if (!photoInput.files || photoInput.files.length === 0) {
-        alert('Please select a photo to upload.');
+      // ensure hero visible quickly
+      const hero = document.querySelector('.hero');
+      if (hero) hero.classList.add('visible');
+    });
+
+    // Upload previews + enable processing
+    const personInput = document.getElementById('person-image-upload');
+    const clothingInput = document.getElementById('clothing-image-upload');
+    const personPreview = document.getElementById('person-image-preview');
+    const clothingPreview = document.getElementById('clothing-image-preview');
+    const processBtn = document.getElementById('process-button');
+    const status = document.getElementById('processing-status');
+    const resultImage = document.getElementById('result-image');
+    const resultPlaceholder = document.getElementById('result-placeholder');
+    const downloadBtn = document.getElementById('download-button');
+
+    let personDataURL = null;
+    let clothingDataURL = null;
+
+    function showPreview(file, previewEl, saveCallback){
+      if (!file) {
+        previewEl.innerHTML = '<span>No image selected</span>';
+        saveCallback && saveCallback(null);
         return;
       }
+      const reader = new FileReader();
+      reader.onload = function(e){
+        const img = document.createElement('img');
+        img.src = e.target.result;
+        previewEl.innerHTML = '';
+        previewEl.appendChild(img);
+        saveCallback && saveCallback(e.target.result);
+      };
+      reader.readAsDataURL(file);
+    }
 
-      const file = photoInput.files[0];
-      const reader =
+    function checkEnable(){
+      processBtn.disabled = !(personDataURL && clothingDataURL);
+    }
+
+    personInput.addEventListener('change', (ev)=>{
+      const file = ev.target.files && ev.target.files[0];
+      showPreview(file, personPreview, (data)=>{
+        personDataURL = data; checkEnable();
+      });
+    });
+    clothingInput.addEventListener('change', (ev)=>{
+      const file = ev.target.files && ev.target.files[0];
+      showPreview(file, clothingPreview, (data)=>{
+        clothingDataURL = data; checkEnable();
+      });
+    });
+
+    // Simulated processing — for now we show the clothing image as "result"
+    processBtn.addEventListener('click', async ()=>{
+      status.innerHTML = '<span class="spinner" aria-hidden="true"></span> Processing...';
+      processBtn.disabled = true;
+      downloadBtn.disabled = true;
+
+      // fake processing delay
+      await new Promise(r => setTimeout(r, 1100));
+
+      // If you had an AI endpoint you'd send personDataURL and clothingDataURL here and get back a result image.
+      // For demo / layout purposes we'll just show a composite-like result:
+      if (clothingDataURL){
+        // show clothing image in result for now
+        resultImage.src = clothingDataURL;
+        resultImage.style.display = 'block';
+        resultPlaceholder.style.display = 'none';
+        status.textContent = 'Result ready';
+        downloadBtn.disabled = false;
+      } else if (personDataURL){
+        resultImage.src = personDataURL;
+        resultImage.style.display = 'block';
+        resultPlaceholder.style.display = 'none';
+        status.textContent = 'Result ready';
+        downloadBtn.disabled = false;
+      } else {
+        status.textContent = 'No images to process';
+      }
+      processBtn.disabled = false;
+    });
+
+    // Download result (works when result.src is data: URL)
+    downloadBtn.addEventListener('click', ()=>{
+      const src = resultImage.src;
+      if (!src) return;
+      // If image is a data URL we can download directly. Otherwise open in new tab (best-effort).
+      if (src.startsWith('data:')){
+        const a = document.createElement('a');
+        a.href = src;
+        a.download = 'fitdoctor-result.png';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      } else {
+        // try to fetch and convert to blob then download (may fail cross-origin)
+        fetch(src, {mode:'cors'}).then(r=>r.blob()).then(blob=>{
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'fitdoctor-result.png';
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          URL.revokeObjectURL(url);
+        }).catch(()=>{
+          // fallback: open image in new tab
+          window.open(src, '_blank');
+        });
+      }
+    });
+  </script>
+</body>
+</html>
