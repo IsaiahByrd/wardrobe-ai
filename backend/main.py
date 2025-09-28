@@ -96,10 +96,12 @@ async def virtual_tryon_api(
         if result_image_path.exists():
             # Add timestamp to prevent browser caching
             timestamp = int(time.time())
+            # Return full URL for production deployment
+            result_url = f"https://fitdoctor.onrender.com/api/result-image?t={timestamp}"
             return {
                 "status": "success", 
                 "message": "Virtual try-on completed successfully",
-                "result_image_url": f"/api/result-image?t={timestamp}"
+                "result_image_url": result_url
             }
         else:
             raise HTTPException(status_code=500, detail="Failed to generate result image")
