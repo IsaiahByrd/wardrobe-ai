@@ -478,7 +478,7 @@ footer {
       formData.append('clothing_image', clothingFile);
 
       // Make API call to backend
-      const response = await fetch('/api/virtual-tryon', {
+      const response = await fetch('https://fitdoctor.onrender.com/api/virtual-tryon', {
         method: 'POST',
         body: formData
       });
@@ -517,7 +517,10 @@ footer {
     
     try {
       // Fetch the image and create a download link
-      const response = await fetch(resultImage.src);
+      const imageUrl = resultImage.src.startsWith('/') ? 
+        `https://fitdoctor.onrender.com${resultImage.src}` : 
+        resultImage.src;
+      const response = await fetch(imageUrl);
       const blob = await response.blob();
       const url = URL.createObjectURL(blob);
       
