@@ -29,9 +29,9 @@ app.mount("/static", StaticFiles(directory=str(FRONTEND_DIR)), name="static")
 
 @app.get("/", response_class=HTMLResponse)
 async def home():
-    """Serve the main page (fit_doctor.html as the home page)"""
+    """Serve the main page (index.html as the home page)"""
     try:
-        with open(FRONTEND_DIR / "fit_doctor.html", "r", encoding="utf-8") as f:
+        with open(FRONTEND_DIR / "index.html", "r", encoding="utf-8") as f:
             return HTMLResponse(content=f.read())
     except FileNotFoundError:
         raise HTTPException(status_code=404, detail="Home page not found")
@@ -49,7 +49,7 @@ async def features():
 async def try_on_page():
     """Serve the virtual try-on page"""
     try:
-        with open(FRONTEND_DIR / "fit_doctor.html", "r", encoding="utf-8") as f:
+        with open(FRONTEND_DIR / "index.html", "r", encoding="utf-8") as f:
             return HTMLResponse(content=f.read())
     except FileNotFoundError:
         raise HTTPException(status_code=404, detail="Try-on page not found")
