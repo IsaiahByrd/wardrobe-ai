@@ -5,10 +5,10 @@ from image_utils import find_image_file, validate_and_preprocess_image
 from api_utils import make_api_request_with_retry
 
 PROMPT = (
-    "Take the clothing items from the second image and put them on the person in the first image. "
-    "Create a single image of a realistic virtual try-on result showing how the clothes would look on the person. "
-    "Make sure the clothing fits naturally on the body, maintaining proper proportions, "
-    "lighting, and perspective. Generate a single composite image."
+    "Take the clothing items from the second image and put them on the person in the first image." 
+    "Generate ONE single, realistic composite image of the person wearing ONLY the clothing from the second image." 
+    "Do NOT include multiple versions of the person, do NOT show the original outfit, and do NOT create before-and-after comparisons." 
+    "The result must contain exactly one person, wearing the new clothes naturally, with proper proportions, lighting, and perspective."
 )
 
 MODELS = [

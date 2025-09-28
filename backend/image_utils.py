@@ -5,6 +5,8 @@ def find_image_file(base_name):
     """Find an image file with the given base name and any supported format"""
     supported_formats = ['jpeg', 'jpg', 'png', 'webp', 'bmp', 'tiff', 'gif']
     
+    #print(os.listdir('.'))
+
     for fmt in supported_formats:
         filename = f"{base_name}.{fmt}"
         if os.path.exists(filename):
