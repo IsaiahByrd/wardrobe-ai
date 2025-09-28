@@ -218,30 +218,47 @@
     .download-button:disabled{background:#9ca3af;cursor:not-allowed}
 
     /* Features */
-    .features-grid{
-      margin-top:30px;
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-      gap:20px;
+    .features-grid-centered {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+      max-width: 900px;
+      margin: 0 auto;
     }
-    .feature-card{
-      background:white;
-      border-radius:var(--radius);
-      overflow:hidden;
-      box-shadow:0 8px 24px rgba(0,0,0,0.1);
-      display:flex;
-      flex-direction:column;
+
+    .feature-card.large-card {
+      flex: 1 1 380px;
+      max-width: 420px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+      transition: transform 0.3s ease;
     }
-    .feature-card img{
-      width:100%;
-      height:200px;
-      object-fit:cover;
+
+    .feature-card.large-card:hover {
+      transform: translateY(-8px);
     }
-    .feature-card div{
-      padding:16px;
+
+    .feature-card.large-card img {
+      height: 260px;
+      object-fit: cover;
+      width: 100%;
+      border-radius: var(--radius) var(--radius) 0 0;
     }
-    .feature-card h3{margin:0 0 8px}
-    .feature-card p{margin:0;color:var(--muted);font-size:0.9rem}
+
+    .feature-card.large-card div {
+      padding: 20px;
+      text-align: center;
+    }
+
+    .feature-card.large-card h3 {
+      font-size: 1.4rem;
+      margin-bottom: 12px;
+    }
+
+    .feature-card.large-card p {
+      font-size: 1rem;
+      color: var(--muted);
+    }
 
     /* Contact + Footer */
     .contact form{
@@ -288,6 +305,7 @@
           <li><a href="how_it_works.html">How It Works</a></li>
           <li><a href="features.html">Features</a></li>
           <li><a href="contact.html">Contact</a></li>
+
         </ul>
       </nav>
     </div>
@@ -351,25 +369,17 @@
           Realistic virtual try-ons with a privacy-first approach. Fast, lightweight, and built for confident shopping.
         </p>
         
-        <div class="features-grid">
-          <!-- Card 1 -->
-          <div class="feature-card">
-            <img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=800&q=80" alt="Modern clothing store" loading="lazy">
-            <div>
-              <h3>Modern Clothing Store</h3>
-              <p>Discover outfits in a sleek shopping environment enhanced by AI-powered visuals.</p>
-            </div>
-          </div>
-          <!-- Card 2 -->
-          <div class="feature-card">
+        <div class="features-grid-centered">
+          <!-- Fashion Lifestyle Try-On -->
+          <div class="feature-card large-card">
             <img src="https://images.unsplash.com/photo-1521334884684-d80222895322?auto=format&fit=crop&w=800&q=80" alt="Fashion lifestyle try-on" loading="lazy">
             <div>
               <h3>Fashion Lifestyle Try-On</h3>
               <p>See how your style fits into real-world looks — instantly and confidently.</p>
             </div>
           </div>
-          <!-- Card 3 -->
-          <div class="feature-card">
+          <!-- Smarter Online Shopping -->
+          <div class="feature-card large-card">
             <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=800&q=80" alt="Shopping online" loading="lazy">
             <div>
               <h3>Smarter Online Shopping</h3>
@@ -381,93 +391,101 @@
     </section>
 
     <!-- Contact -->
-    <section id="contact" class="contact fade-in" style="padding:30px 0;">
-      <div class="container">
-        <h2 style="text-align:center;">Get in Touch</h2>
+    <section id="contact" class="fade-in" style="padding:40px 0;">
+      <div class="container contact">
+        <h2 style="text-align:center; margin-bottom:12px;">Get In Touch</h2>
         <form>
-          <input type="text" placeholder="Your name" required>
-          <input type="email" placeholder="Your email" required>
-          <textarea rows="4" placeholder="Message"></textarea>
-          <button type="submit">Send</button>
+          <input type="text" placeholder="Your Name" required />
+          <input type="email" placeholder="Your Email" required />
+          <textarea rows="5" placeholder="Your Message" required></textarea>
+          <button type="submit">Send Message</button>
         </form>
       </div>
     </section>
   </main>
 
   <footer>
-    <p>&copy; <span id="year"></span> FitDoctor. All rights reserved.</p>
+    &copy; 2025 FitDoctor. All rights reserved.
   </footer>
 
   <script>
-    document.getElementById('year').textContent=new Date().getFullYear();
+    // Image upload previews and enabling button logic
+    const personUpload = document.getElementById('person-image-upload');
+    const clothingUpload = document.getElementById('clothing-image-upload');
+    const personPreview = document.getElementById('person-image-preview');
+    const clothingPreview = document.getElementById('clothing-image-preview');
+    const processButton = document.getElementById('process-button');
+    const resultImage = document.getElementById('result-image');
+    const resultPlaceholder = document.getElementById('result-placeholder');
+    const downloadButton = document.getElementById('download-button');
+    const processingStatus = document.getElementById('processing-status');
 
-    // Fade-ins
-    document.addEventListener('DOMContentLoaded',()=>{
-      const faders=document.querySelectorAll('.fade-in');
-      const obs=new IntersectionObserver((entries,o)=>{
-        entries.forEach(e=>{
-          if(e.isIntersecting){e.target.classList.add('visible');o.unobserve(e.target);}
-        });
-      },{threshold:0.15});
-      faders.forEach(f=>obs.observe(f));
-      const hero=document.querySelector('.hero');
-      if(hero) hero.classList.add('visible');
+    let personFile = null;
+    let clothingFile = null;
+
+    function updateProcessButton() {
+      processButton.disabled = !(personFile && clothingFile);
+    }
+
+    function previewImage(input, previewElement) {
+      if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = e => {
+          previewElement.innerHTML = '';
+          const img = document.createElement('img');
+          img.src = e.target.result;
+          img.alt = "Uploaded image preview";
+          previewElement.appendChild(img);
+        };
+        reader.readAsDataURL(input.files[0]);
+      } else {
+        previewElement.innerHTML = '<span>No image selected</span>';
+      }
+    }
+
+    personUpload.addEventListener('change', e => {
+      personFile = e.target.files[0] || null;
+      previewImage(e.target, personPreview);
+      updateProcessButton();
     });
 
-    // Upload previews
-    function handleUpload(input,previewId){
-      const preview=document.getElementById(previewId);
-      const file=input.files[0];
-      if(!file) return;
-      const reader=new FileReader();
-      reader.onload=e=>{
-        preview.innerHTML=`<img src="${e.target.result}" alt="preview">`;
-      };
-      reader.readAsDataURL(file);
-      checkReady();
-    }
-    function checkReady(){
-      const p=document.getElementById('person-image-upload').files.length>0;
-      const c=document.getElementById('clothing-image-upload').files.length>0;
-      document.getElementById('process-button').disabled=!(p&&c);
-    }
-    document.getElementById('person-image-upload').addEventListener('change',e=>handleUpload(e.target,'person-image-preview'));
-    document.getElementById('clothing-image-upload').addEventListener('change',e=>handleUpload(e.target,'clothing-image-preview'));
+    clothingUpload.addEventListener('change', e => {
+      clothingFile = e.target.files[0] || null;
+      previewImage(e.target, clothingPreview);
+      updateProcessButton();
+    });
 
-    // Fake generate
-    document.getElementById('process-button').addEventListener('click',()=>{
-      const status=document.getElementById('processing-status');
-      const result=document.getElementById('result-image');
-      const placeholder=document.getElementById('result-placeholder');
-      const download=document.getElementById('download-button');
-      status.innerHTML='<span class="spinner"></span> Processing...';
-      setTimeout(()=>{
-        status.textContent="Done!";
-        placeholder.style.display="none";
-        result.style.display="block";
-        // Just show the clothing photo for demo
-        const clothingFile=document.getElementById('clothing-image-upload').files[0];
-        if(clothingFile){
-          const reader=new FileReader();
-          reader.onload=e=>{
-            result.src=e.target.result;
-          };
-          reader.readAsDataURL(clothingFile);
+    processButton.addEventListener('click', () => {
+      processingStatus.textContent = '';
+      processButton.disabled = true;
+      processingStatus.innerHTML = '<span class="spinner"></span>Processing...';
+
+      // Fake processing delay for demo
+      setTimeout(() => {
+        processingStatus.textContent = '';
+        // For demo: show person image as result (in real app, this is AI-generated)
+        if (personFile) {
+          const url = URL.createObjectURL(personFile);
+          resultImage.src = url;
+          resultImage.style.display = 'block';
+          resultPlaceholder.style.display = 'none';
+          downloadButton.disabled = false;
         }
-        download.disabled=false;
-      },2000);
+        processButton.disabled = false;
+      }, 2000);
     });
 
-    // Download
-    document.getElementById('download-button').addEventListener('click',()=>{
-      const result=document.getElementById('result-image');
-      if(!result.src) return;
-      const a=document.createElement('a');
-      a.href=result.src;
-      a.download='fitdoctor-tryon.png';
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
+    downloadButton.addEventListener('click', () => {
+      if (!resultImage.src) return;
+      const link = document.createElement('a');
+      link.href = resultImage.src;
+      link.download = 'fitdoctor-tryon.png';
+      link.click();
+    });
+
+    // Fade in animations
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.fade-in').forEach(el => el.classList.add('visible'));
     });
   </script>
 </body>
