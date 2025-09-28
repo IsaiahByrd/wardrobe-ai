@@ -45,15 +45,6 @@ async def features():
     except FileNotFoundError:
         raise HTTPException(status_code=404, detail="Features page not found")
 
-@app.get("/how-it-works", response_class=HTMLResponse)
-async def how_it_works():
-    """Serve the how it works page"""
-    try:
-        with open(FRONTEND_DIR / "how_it_works.html", "r", encoding="utf-8") as f:
-            return HTMLResponse(content=f.read())
-    except FileNotFoundError:
-        raise HTTPException(status_code=404, detail="How it works page not found")
-
 @app.get("/try-on", response_class=HTMLResponse)
 async def try_on_page():
     """Serve the virtual try-on page"""

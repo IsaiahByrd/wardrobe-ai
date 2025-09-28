@@ -6,7 +6,6 @@
 <title>FitDoctor — Virtual Try-On</title>
 <!-- Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&family=Oswald:wght@700&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet">
-" rel="stylesheet">
 <style>
 :root {
   --primary:#111827;
@@ -334,12 +333,10 @@ footer {
 <body>
 <header>
   <div class="container topbar">
-    <a class="logo" href="#">FitDoctor</a>
+    <a class="logo" href="/">FitDoctor</a>
     <nav>
       <ul>
-        <li><a href="how_it_works.html">How It Works</a></li>
-        <li><a href="features.html">Features</a></li>
-        <li><a href="contact.html">Contact</a></li>
+        <li><a href="/features">Features</a></li>
       </ul>
     </nav>
   </div>
@@ -404,7 +401,7 @@ footer {
           <img src="https://images.unsplash.com/photo-1521334884684-d80222895322?auto=format&fit=crop&w=800&q=80" alt="Fashion lifestyle try-on" loading="lazy">
           <div>
             <h3>Fashion Lifestyle Try-On</h3>
-            <p>See how your style fits into real-world looks — instantly and confidently.</p>
+            <p>See how your style fits into real-world looks instantly and confidently.</p>
           </div>
         </div>
         <!-- Smarter Online Shopping -->
@@ -469,32 +466,78 @@ footer {
     updateProcessButton();
   });
 
-  processButton.addEventListener('click', () => {
+  processButton.addEventListener('click', async () => {
     processingStatus.textContent = '';
     processButton.disabled = true;
     processingStatus.innerHTML = '<span class="spinner"></span>Processing...';
 
-    // Fake processing delay for demo
-    setTimeout(() => {
-      processingStatus.textContent = '';
-      // For demo: show person image as result (in real app, this is AI-generated)
-      if (personFile) {
-        const url = URL.createObjectURL(personFile);
-        resultImage.src = url;
+    try {
+      // Create FormData to send the images to the backend
+      const formData = new FormData();
+      formData.append('person_image', personFile);
+      formData.append('clothing_image', clothingFile);
+
+      // Make API call to backend
+      const response = await fetch('/api/virtual-tryon', {
+        method: 'POST',
+        body: formData
+      });
+
+      if (!response.ok) {
+        throw new Error(`API error: ${response.status} ${response.statusText}`);
+      }
+
+      const result = await response.json();
+      
+      if (result.status === 'success' && result.result_image_url) {
+        // Display the generated virtual try-on result
+        resultImage.src = result.result_image_url;
         resultImage.style.display = 'block';
         resultPlaceholder.style.display = 'none';
         downloadButton.disabled = false;
+        processingStatus.innerHTML = '<span style="color: green;">✓ Virtual try-on completed successfully!</span>';
+      } else {
+        throw new Error(result.message || 'Failed to generate virtual try-on');
       }
+    } catch (error) {
+      console.error('Virtual try-on error:', error);
+      processingStatus.innerHTML = `<span style="color: red;">❌ Error: ${error.message}</span>`;
+      
+      // Reset result display
+      resultImage.style.display = 'none';
+      resultPlaceholder.style.display = 'block';
+      downloadButton.disabled = true;
+    } finally {
       processButton.disabled = false;
-    }, 2000);
+    }
   });
 
-  downloadButton.addEventListener('click', () => {
+  downloadButton.addEventListener('click', async () => {
     if (!resultImage.src) return;
-    const link = document.createElement('a');
-    link.href = resultImage.src;
-    link.download = 'fitdoctor-tryon.png';
-    link.click();
+    
+    try {
+      // Fetch the image and create a download link
+      const response = await fetch(resultImage.src);
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'fitdoctor-virtual-tryon-result.png';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      // Clean up the object URL
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Download error:', error);
+      // Fallback to simple download
+      const link = document.createElement('a');
+      link.href = resultImage.src;
+      link.download = 'fitdoctor-virtual-tryon-result.png';
+      link.click();
+    }
   });
 
   // Fade in animations
