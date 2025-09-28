@@ -8,7 +8,7 @@ def find_image_file(base_name):
     #print(os.listdir('.'))
 
     for fmt in supported_formats:
-        filename = f"backend/{base_name}.{fmt}"
+        filename = f"{base_name}.{fmt}"
         if os.path.exists(filename):
             return filename
     return None

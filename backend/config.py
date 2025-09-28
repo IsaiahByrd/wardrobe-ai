@@ -9,5 +9,5 @@ def get_client():
             "Get an API key from: https://aistudio.google.com/app/apikey\n"
             "Then run: export GEMINI_API_KEY='your-api-key-here'"
         )
-    print("DEBUG: GEMINI_API_KEY =", os.getenv("GEMINI_API_KEY"))
+    
     return genai.Client(api_key=api_key)
