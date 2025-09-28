@@ -16,6 +16,7 @@
       --border:#e5e7eb;
       --muted:#6b7280;
       --radius:12px;
+      --badge-bg: #eef2ff;
     }
 
     body {
@@ -97,14 +98,12 @@
     }
     .cta:hover{background:#1d4ed8}
 
-    /* Layout container */
+    /* Upload Section */
     .container {
       max-width:1180px;
       margin:0 auto;
-      padding:0 18px;
+      padding:0 18px 60px;
     }
-
-    /* Upload Section */
     .tryon-grid {
       display:grid;
       gap:28px;
@@ -125,6 +124,10 @@
       border-radius:var(--radius);
       box-shadow:0 4px 14px rgba(0,0,0,0.08);
       text-align:center;
+      transition: box-shadow 0.3s ease;
+    }
+    .upload-card:hover {
+      box-shadow: 0 8px 28px rgba(0,0,0,0.15);
     }
     .upload-card h3{margin-top:0;font-size:1.1rem}
     .image-preview{
@@ -136,6 +139,8 @@
       justify-content:center;
       margin-bottom:12px;
       overflow:hidden;
+      background: #fafafa;
+      transition: background 0.3s ease;
     }
     .image-preview img{
       max-width:100%;
@@ -152,6 +157,7 @@
       font-size:0.9rem;
       display:inline-block;
       margin:0 auto;
+      transition: background 0.3s ease;
     }
     .upload-button:hover{background:#1d4ed8}
     .upload-tip{font-size:0.8rem;color:var(--muted);margin-top:6px}
@@ -169,8 +175,10 @@
       border:none;
       border-radius:var(--radius);
       cursor:pointer;
+      transition: background 0.3s ease;
     }
     .process-button:disabled{background:#9ca3af;cursor:not-allowed}
+    .process-button:hover:not(:disabled){background:#1d4ed8}
     .status{margin-top:10px;font-size:0.9rem;color:var(--muted)}
     .spinner {
       border:3px solid #f3f3f3;
@@ -190,12 +198,17 @@
       border-radius:var(--radius);
       box-shadow:0 4px 14px rgba(0,0,0,0.08);
       text-align:center;
+      transition: box-shadow 0.3s ease;
+    }
+    .result-card:hover {
+      box-shadow:0 8px 28px rgba(0,0,0,0.15);
     }
     .result-card h3{margin-top:0;font-size:1.1rem}
     .result-card img {
       max-width:100%;
       border-radius:var(--radius);
       display:none;
+      user-select:none;
     }
     .placeholder {
       height:320px;
@@ -205,6 +218,8 @@
       align-items:center;
       justify-content:center;
       color:var(--muted);
+      font-style: italic;
+      user-select:none;
     }
     .download-button {
       margin-top:12px;
@@ -214,35 +229,50 @@
       background:var(--accent);
       color:white;
       cursor:pointer;
+      transition: background 0.3s ease;
     }
     .download-button:disabled{background:#9ca3af;cursor:not-allowed}
+    .download-button:hover:not(:disabled){background:#1d4ed8}
 
-    /* Features */
+    /* Features + Use Cases */
     .features-grid-centered {
       display: flex;
       justify-content: center;
       gap: 40px;
       flex-wrap: wrap;
       max-width: 900px;
-      margin: 0 auto;
+      margin: 60px auto 80px;
     }
 
     .feature-card.large-card {
       flex: 1 1 380px;
       max-width: 420px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.12);
-      transition: transform 0.3s ease;
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: white;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
+      cursor: default;
+      user-select:none;
     }
 
     .feature-card.large-card:hover {
       transform: translateY(-8px);
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.15);
     }
 
     .feature-card.large-card img {
       height: 260px;
       object-fit: cover;
       width: 100%;
-      border-radius: var(--radius) var(--radius) 0 0;
+      display: block;
+      transition: transform 0.3s ease;
+      pointer-events:none;
+    }
+
+    .feature-card.large-card:hover img {
+      transform: scale(1.03);
     }
 
     .feature-card.large-card div {
@@ -252,240 +282,294 @@
 
     .feature-card.large-card h3 {
       font-size: 1.4rem;
-      margin-bottom: 12px;
+      margin-bottom: 8px;
     }
 
     .feature-card.large-card p {
       font-size: 1rem;
       color: var(--muted);
+      min-height: 48px;
     }
 
-    /* Contact + Footer */
-    .contact form{
-      display:grid;
-      gap:12px;
-      max-width:460px;
-      margin:0 auto;
+    .tag-badge {
+      display: inline-block;
+      background: var(--badge-bg);
+      color: var(--accent);
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+      user-select:none;
     }
-    .contact input,.contact textarea{
-      width:100%;
-      padding:10px;
-      border:1px solid var(--border);
-      border-radius:var(--radius);
-      font-family:inherit;
+
+    /* Animation */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
     }
-    .contact button{
-      background:var(--accent);
-      color:white;
-      padding:10px 18px;
-      border:none;
-      border-radius:var(--radius);
-      cursor:pointer;
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
-    .contact button:hover{background:#1d4ed8}
+
+    /* Footer */
     footer {
       margin-top:40px;
-      padding:20px;
+      padding:24px 20px;
+      background:#1f2937;
+      color:#d1d5db;
       text-align:center;
-      color:var(--muted);
-      font-size:0.85rem;
+      font-size:0.9rem;
     }
 
-    /* Fade animation */
-    .fade-in{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
-    .fade-in.visible{opacity:1;transform:translateY(0)}
+    /* Accessibility Focus Styles */
+    a:focus, button:focus, input[type="file"]:focus + label {
+      outline: 3px solid var(--accent);
+      outline-offset: 3px;
+    }
   </style>
 </head>
 <body>
   <header>
-    <div class="container topbar">
-      <a class="logo" href="#">FitDoctor</a>
-      <nav>
+    <div class="topbar">
+      <a href="#" class="logo" aria-label="FitDoctor Homepage">FitDoctor</a>
+      <nav aria-label="Primary navigation">
         <ul>
-          <li><a href="how_it_works.html">How It Works</a></li>
-          <li><a href="features.html">Features</a></li>
-          <li><a href="contact.html">Contact</a></li>
-
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Features</a></li>
+          <li><a href="#">Try On</a></li>
+          <li><a href="#">About</a></li>
         </ul>
       </nav>
     </div>
   </header>
 
-  <main>
-    <!-- Hero -->
-    <section class="hero fade-in">
-      <div class="container hero-inner">
-        <h1>Experience Virtual Try-On Like Never Before</h1>
-        <p>Upload your photo and a clothing image — see how it looks instantly with AI simulation.</p>
-        <button class="cta" onclick="document.getElementById('tryon').scrollIntoView({behavior:'smooth'});">Try It Now</button>
-      </div>
-    </section>
+  <section class="hero" role="banner">
+    <div class="hero-inner">
+      <h1>Virtual Try-On for Personalized Fit</h1>
+      <p>Upload your photo and try on clothes virtually to find your perfect fit with FitDoctor’s AI-powered platform.</p>
+      <button class="cta" aria-label="Get Started with FitDoctor">Get Started</button>
+    </div>
+  </section>
 
-    <!-- Try-On Section -->
-    <section id="tryon" class="fade-in">
-      <div class="container tryon-grid">
-        <div>
-          <h2 style="margin-bottom:12px;">Upload Photos</h2>
-          <div class="upload-column">
-            <!-- Your Photo -->
-            <div class="upload-card" id="person-card">
-              <h3>1. Your Photo</h3>
-              <div class="image-preview" id="person-image-preview"><span>No image selected</span></div>
-              <input class="file-input" id="person-image-upload" accept="image/*" type="file">
-              <label class="upload-button" for="person-image-upload">Upload Your Photo</label>
-              <div class="upload-tip">Full body, good lighting recommended.</div>
-            </div>
-            <!-- Clothing -->
-            <div class="upload-card" id="clothing-card">
-              <h3>2. Clothing Photo</h3>
-              <div class="image-preview" id="clothing-image-preview"><span>No image selected</span></div>
-              <input class="file-input" id="clothing-image-upload" accept="image/*" type="file">
-              <label class="upload-button" for="clothing-image-upload">Upload Clothing</label>
-              <div class="upload-tip">Plain background works best.</div>
-            </div>
-            <!-- Controls -->
-            <div class="controls">
-              <button id="process-button" class="process-button" disabled>Generate Try-On</button>
-              <div class="status" id="processing-status" aria-live="polite"></div>
-            </div>
-          </div>
+  <main class="container" role="main" aria-label="Virtual Try-On Section">
+    <div class="tryon-grid">
+      <div class="upload-column">
+        <div class="upload-card" aria-label="Upload Your Photo">
+          <h3>Upload Your Photo</h3>
+          <div class="image-preview" id="userPhotoPreview" aria-live="polite" aria-atomic="true">No photo uploaded</div>
+          <input type="file" id="userPhotoInput" class="file-input" accept="image/*" aria-describedby="userPhotoDesc" />
+          <label for="userPhotoInput" class="upload-button" tabindex="0">Choose Photo</label>
+          <div id="userPhotoDesc" class="upload-tip">Supported formats: JPG, PNG</div>
         </div>
-
-        <!-- Result -->
-        <div class="result-card">
-          <h3>Your Virtual Try-On</h3>
-          <div id="result-placeholder" class="placeholder">Result will appear here</div>
-          <img id="result-image" alt="Virtual try-on result" loading="lazy">
-          <button id="download-button" class="download-button" disabled>Download Result</button>
+        <div class="upload-card" aria-label="Upload Clothing Image">
+          <h3>Upload Clothing Image</h3>
+          <div class="image-preview" id="clothingPreview" aria-live="polite" aria-atomic="true">No clothing image uploaded</div>
+          <input type="file" id="clothingInput" class="file-input" accept="image/*" aria-describedby="clothingDesc" />
+          <label for="clothingInput" class="upload-button" tabindex="0">Choose Clothing</label>
+          <div id="clothingDesc" class="upload-tip">Supported formats: JPG, PNG</div>
         </div>
       </div>
-    </section>
 
-    <!-- Features -->
-    <section id="features" class="fade-in" style="padding:40px 0;">
-      <div class="container">
-        <h2 style="text-align:center; margin-bottom:12px;">Why Choose FitDoctor?</h2>
-        <p style="text-align:center; color:var(--muted); max-width:860px; margin:0 auto 30px">
-          Realistic virtual try-ons with a privacy-first approach. Fast, lightweight, and built for confident shopping.
-        </p>
-        
-        <div class="features-grid-centered">
-          <!-- Fashion Lifestyle Try-On -->
-          <div class="feature-card large-card">
-            <img src="https://images.unsplash.com/photo-1521334884684-d80222895322?auto=format&fit=crop&w=800&q=80" alt="Fashion lifestyle try-on" loading="lazy">
-            <div>
-              <h3>Fashion Lifestyle Try-On</h3>
-              <p>See how your style fits into real-world looks — instantly and confidently.</p>
-            </div>
-          </div>
-          <!-- Smarter Online Shopping -->
-          <div class="feature-card large-card">
-            <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=800&q=80" alt="Shopping online" loading="lazy">
-            <div>
-              <h3>Smarter Online Shopping</h3>
-              <p>Shop online with confidence, knowing exactly how clothes will look on you.</p>
-            </div>
-          </div>
-        </div>
+      <div class="result-card" aria-live="polite" aria-atomic="true" aria-label="Result Preview">
+        <h3>Result Preview</h3>
+        <div class="placeholder" id="resultPlaceholder">Your try-on result will appear here</div>
+        <img id="resultImage" alt="Try-on Result" />
+        <button class="download-button" id="downloadButton" disabled aria-disabled="true">Download Result</button>
       </div>
-    </section>
+    </div>
 
-    <!-- Contact -->
-    <section id="contact" class="fade-in" style="padding:40px 0;">
-      <div class="container contact">
-        <h2 style="text-align:center; margin-bottom:12px;">Get In Touch</h2>
-        <form>
-          <input type="text" placeholder="Your Name" required />
-          <input type="email" placeholder="Your Email" required />
-          <textarea rows="5" placeholder="Your Message" required></textarea>
-          <button type="submit">Send Message</button>
-        </form>
-      </div>
-    </section>
+    <div class="controls">
+      <button class="process-button" id="processButton" disabled aria-disabled="true">Try On Clothes</button>
+      <div class="status" id="statusMessage" aria-live="polite"></div>
+    </div>
   </main>
 
-  <footer>
+  <!-- REPLACED GET IN TOUCH SECTION with Modern Use Case Gallery -->
+  <section class="container" aria-label="Use Case Gallery" id="useCaseGallery">
+    <h2 style="text-align:center; margin-bottom: 40px; font-family: 'Oswald', sans-serif; font-size:2rem; color: var(--primary);">
+      Explore Use Cases
+    </h2>
+    <div class="features-grid-centered" role="list">
+      <article class="feature-card large-card fade-in" role="listitem" tabindex="0" aria-label="Try Before You Buy Use Case">
+        <img src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=800&q=80" alt="Person trying on clothes virtually" loading="lazy" />
+        <div>
+          <div class="tag-badge">Try Before You Buy</div>
+          <h3>Try Before You Buy</h3>
+          <p>Experience clothes virtually on your own photo before purchasing to ensure perfect fit and style.</p>
+        </div>
+      </article>
+      <article class="feature-card large-card fade-in" role="listitem" tabindex="0" aria-label="Fashion & Design Use Case">
+        <img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=800&q=80" alt="Fashion designer working on clothing design" loading="lazy" />
+        <div>
+          <div class="tag-badge">Fashion & Design</div>
+          <h3>Fashion & Design</h3>
+          <p>Designers can visualize garments on diverse body types to create inclusive and tailored collections.</p>
+        </div>
+      </article>
+      <article class="feature-card large-card fade-in" role="listitem" tabindex="0" aria-label="Virtual Shopping Use Case">
+        <img src="https://images.unsplash.com/photo-1487412912498-0447578fcca8?auto=format&fit=crop&w=800&q=80" alt="Person shopping online with virtual try-on" loading="lazy" />
+        <div>
+          <div class="tag-badge">Virtual Shopping</div>
+          <h3>Virtual Shopping</h3>
+          <p>Integrate virtual try-on into e-commerce platforms to boost confidence and reduce returns.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <footer role="contentinfo">
     &copy; 2025 FitDoctor. All rights reserved.
   </footer>
 
   <script>
-    // Image upload previews and enabling button logic
-    const personUpload = document.getElementById('person-image-upload');
-    const clothingUpload = document.getElementById('clothing-image-upload');
-    const personPreview = document.getElementById('person-image-preview');
-    const clothingPreview = document.getElementById('clothing-image-preview');
-    const processButton = document.getElementById('process-button');
-    const resultImage = document.getElementById('result-image');
-    const resultPlaceholder = document.getElementById('result-placeholder');
-    const downloadButton = document.getElementById('download-button');
-    const processingStatus = document.getElementById('processing-status');
+    // Animate fade-in on scroll
+    function onScrollFade() {
+      const fadeEls = document.querySelectorAll('.fade-in');
+      const windowBottom = window.innerHeight;
+      fadeEls.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < windowBottom - 50) {
+          el.classList.add('visible');
+        }
+      });
+    }
+    window.addEventListener('scroll', onScrollFade);
+    window.addEventListener('load', onScrollFade);
 
-    let personFile = null;
+    // Image upload previews and enabling process button
+    const userPhotoInput = document.getElementById('userPhotoInput');
+    const userPhotoPreview = document.getElementById('userPhotoPreview');
+    const clothingInput = document.getElementById('clothingInput');
+    const clothingPreview = document.getElementById('clothingPreview');
+    const processButton = document.getElementById('processButton');
+    const statusMessage = document.getElementById('statusMessage');
+    const resultPlaceholder = document.getElementById('resultPlaceholder');
+    const resultImage = document.getElementById('resultImage');
+    const downloadButton = document.getElementById('downloadButton');
+
+    let userPhotoFile = null;
     let clothingFile = null;
 
-    function updateProcessButton() {
-      processButton.disabled = !(personFile && clothingFile);
-    }
-
-    function previewImage(input, previewElement) {
-      if (input.files && input.files[0]) {
-        const reader = new FileReader();
-        reader.onload = e => {
-          previewElement.innerHTML = '';
-          const img = document.createElement('img');
-          img.src = e.target.result;
-          img.alt = "Uploaded image preview";
-          previewElement.appendChild(img);
-        };
-        reader.readAsDataURL(input.files[0]);
+    function updateProcessButtonState() {
+      if(userPhotoFile && clothingFile) {
+        processButton.disabled = false;
+        processButton.setAttribute('aria-disabled', 'false');
       } else {
-        previewElement.innerHTML = '<span>No image selected</span>';
+        processButton.disabled = true;
+        processButton.setAttribute('aria-disabled', 'true');
       }
     }
 
-    personUpload.addEventListener('change', e => {
-      personFile = e.target.files[0] || null;
-      previewImage(e.target, personPreview);
-      updateProcessButton();
+    function previewImage(input, previewElement) {
+      if(input.files && input.files[0]) {
+        const file = input.files[0];
+        const url = URL.createObjectURL(file);
+        previewElement.innerHTML = '';
+        const img = document.createElement('img');
+        img.src = url;
+        img.alt = "Uploaded image preview";
+        previewElement.appendChild(img);
+        return file;
+      } else {
+        previewElement.textContent = 'No image uploaded';
+        return null;
+      }
+    }
+
+    userPhotoInput.addEventListener('change', () => {
+      userPhotoFile = previewImage(userPhotoInput, userPhotoPreview);
+      updateProcessButtonState();
+      resetResult();
     });
 
-    clothingUpload.addEventListener('change', e => {
-      clothingFile = e.target.files[0] || null;
-      previewImage(e.target, clothingPreview);
-      updateProcessButton();
+    clothingInput.addEventListener('change', () => {
+      clothingFile = previewImage(clothingInput, clothingPreview);
+      updateProcessButtonState();
+      resetResult();
     });
 
+    function resetResult(){
+      resultImage.style.display = 'none';
+      resultPlaceholder.style.display = 'flex';
+      downloadButton.disabled = true;
+      downloadButton.setAttribute('aria-disabled', 'true');
+      statusMessage.textContent = '';
+    }
+
+    // Simulated AI Try-On Processing
     processButton.addEventListener('click', () => {
-      processingStatus.textContent = '';
+      statusMessage.innerHTML = '<span class="spinner" aria-hidden="true"></span>Processing...';
       processButton.disabled = true;
-      processingStatus.innerHTML = '<span class="spinner"></span>Processing...';
+      processButton.setAttribute('aria-disabled', 'true');
 
-      // Fake processing delay for demo
+      // Simulate delay for processing
       setTimeout(() => {
-        processingStatus.textContent = '';
-        // For demo: show person image as result (in real app, this is AI-generated)
-        if (personFile) {
-          const url = URL.createObjectURL(personFile);
-          resultImage.src = url;
-          resultImage.style.display = 'block';
-          resultPlaceholder.style.display = 'none';
-          downloadButton.disabled = false;
+        // For demo, just show user photo overlayed with clothing preview (simple approach)
+        if (userPhotoFile && clothingFile) {
+          // Create a canvas to simulate try-on result
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
+          const userImg = new Image();
+          const clothingImg = new Image();
+
+          userImg.onload = () => {
+            clothingImg.onload = () => {
+              // Set canvas size to user photo size
+              canvas.width = userImg.width;
+              canvas.height = userImg.height;
+
+              // Draw user photo
+              ctx.drawImage(userImg, 0, 0, canvas.width, canvas.height);
+
+              // Overlay clothing image with some transparency
+              const aspectRatio = clothingImg.width / clothingImg.height;
+              // Draw clothing roughly centered and scaled to 70% of width
+              const clothingWidth = canvas.width * 0.7;
+              const clothingHeight = clothingWidth / aspectRatio;
+              const x = (canvas.width - clothingWidth) / 2;
+              const y = (canvas.height - clothingHeight) / 2;
+
+              ctx.globalAlpha = 0.75;
+              ctx.drawImage(clothingImg, x, y, clothingWidth, clothingHeight);
+              ctx.globalAlpha = 1.0;
+
+              // Show canvas as result
+              resultImage.src = canvas.toDataURL('image/png');
+              resultImage.style.display = 'block';
+              resultPlaceholder.style.display = 'none';
+
+              downloadButton.disabled = false;
+              downloadButton.setAttribute('aria-disabled', 'false');
+              statusMessage.textContent = 'Try-on completed!';
+
+              processButton.disabled = false;
+              processButton.setAttribute('aria-disabled', 'false');
+            };
+            clothingImg.src = URL.createObjectURL(clothingFile);
+          };
+          userImg.src = URL.createObjectURL(userPhotoFile);
+        } else {
+          statusMessage.textContent = 'Please upload both images.';
+          processButton.disabled = false;
+          processButton.setAttribute('aria-disabled', 'false');
         }
-        processButton.disabled = false;
-      }, 2000);
+      }, 2500);
     });
 
+    // Download button functionality
     downloadButton.addEventListener('click', () => {
-      if (!resultImage.src) return;
-      const link = document.createElement('a');
-      link.href = resultImage.src;
-      link.download = 'fitdoctor-tryon.png';
-      link.click();
-    });
-
-    // Fade in animations
-    document.addEventListener('DOMContentLoaded', () => {
-      document.querySelectorAll('.fade-in').forEach(el => el.classList.add('visible'));
+      if(resultImage.src) {
+        const link = document.createElement('a');
+        link.href = resultImage.src;
+        link.download = 'fitdoctor-tryon.png';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
     });
   </script>
 </body>
