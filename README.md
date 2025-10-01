@@ -1,99 +1,173 @@
-# Wardrobe AI: AI-Powered Virtual Try-On
+# 👕 Wardrobe AI: AI-Powered Virtual Try-On
 
-## Overview
+<div align="center">
 
-Wardrobe AI is an innovative AI-driven tool that enables users to virtually try on clothing items using simple image uploads. By providing a photo of a person (e.g., "image1") and an image of the desired clothing (e.g., "image2"), the script generates a realistic composite image showing how the outfit would look on the individual. This bridges the gap between online shopping and real-world fitting, reducing purchase uncertainties and enhancing user experience.
+**Experience the future of online shopping with AI-powered virtual try-on technology**
 
-Powered by advanced AI models like Google's Gemini series, the tool leverages computer vision and image generation to ensure natural fits, accurate proportions, lighting, and perspectives. Ideal for e-commerce integrations, personal styling apps, or fashion tech prototypes.
+[![Live Demo](https://img.shields.io/badge/🚀-Live%20Demo-brightgreen?style=for-the-badge)](https://wardrobe-ai-git-main-isaiah-byrds-projects.vercel.app/)
+[![Python](https://img.shields.io/badge/Python-3.8+-blue?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
 
-## Key Features
 
-- **Image Upload and Processing**: Automatically detects, validates, and preprocesses input images.
-- **AI-Driven Try-On Generation**: Uses prompts to overlay clothing realistically on the person's body.
-- **Model Fallback System**: Tries multiple Gemini models (2.5-flash-image-preview, 1.5-flash, 1.5-pro) for reliable results.
-- **Output Saving**: Generates and saves the result as "virtual_try_on_result.png".
-- **Error Handling**: Robust retries and validation to manage API failures or invalid inputs.
+</div>
 
-## Requirements
+---
 
-- **Python Version**: 3.8 or higher.
-- **Dependencies**:
-  - `pillow` (PIL for image handling).
-  - Google Gemini API client (via `google-generativeai` or similar).
-  - Custom modules: `config.py` (for API client setup), `image_utils.py` (for image finding and validation), `api_utils.py` (for API requests with retries).
-- **API Access**: A valid Google API key for Gemini models. Set this up in `config.py`.
-- **Input Images**: Place "image1" (person photo) and "image2" (clothing item) in the working directory or a searchable path. Supported formats: JPEG, PNG, etc.
+## 🌟 Overview
 
-## Installation
+**Wardrobe AI** revolutionizes online shopping by bridging the gap between digital browsing and real-world fitting. Using cutting-edge AI technology, it generates realistic virtual try-on experiences that help users visualize how clothing will look on them before making a purchase.
 
-1. **Clone the Repository** (if applicable):
+### ✨ What makes it special?
+
+- 🎯 **Realistic Results**: Advanced AI ensures natural fits with accurate proportions and lighting
+- 🔒 **Privacy-First**: Your photos are processed securely without unnecessary data retention
+- ⚡ **Lightning Fast**: Get results in seconds, not minutes
+- 🎨 **Easy to Use**: Simple drag-and-drop interface - no technical knowledge required
+
+---
+
+## 🚀 Try It Live
+
+<div align="center">
+
+### **👉 [Experience Wardrobe AI Now](https://wardrobe-ai-git-main-isaiah-byrds-projects.vercel.app/)**
+
+*Upload your photo + clothing image = See your perfect fit instantly!*
+
+**No installation • No signup • No hassle**
+
+</div>
+
+---
+
+## 🛠️ Key Features
+
+| Feature | Description |
+|---------|-------------|
+| 🖼️ **Smart Image Processing** | Automatically validates, resizes, and optimizes uploaded images |
+| 🤖 **AI-Powered Generation** | Leverages Google's Gemini models for photorealistic try-on results |
+| 🔄 **Intelligent Fallbacks** | Multiple model support ensures reliable results every time |
+| 💾 **Instant Results** | Real-time processing with immediate download capabilities |
+| 🛡️ **Robust Error Handling** | Built-in retry mechanisms and comprehensive validation |
+| 📱 **Responsive Design** | Works seamlessly across desktop, tablet, and mobile devices |
+
+---
+
+## 🏗️ Architecture
+
+### Tech Stack
+- **Backend**: FastAPI (Python)
+- **AI Models**: Google Gemini (2.5-flash-image-preview, 1.5-flash, 1.5-pro)
+- **Frontend**: HTML5, CSS3, JavaScript
+- **Deployment**: Render (Backend) + Vercel (Frontend)
+
+### How it Works
+1. **Upload**: Users provide a person photo and clothing image
+2. **Process**: AI analyzes both images for optimal overlay positioning
+3. **Generate**: Advanced algorithms create a realistic composite image
+4. **Deliver**: Result is instantly available for viewing and download
+
+---
+
+## 🚦 Getting Started
+
+### Prerequisites
+- Python 3.8+
+- Google Gemini API key
+
+### Quick Setup
+
+```bash
+# Clone the repository
+git clone https://github.com/IsaiahByrd/wardrobe-ai.git
+cd wardrobe-ai
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Set up environment variables
+export GEMINI_API_KEY="your-api-key-here"
+
+# Run the application
+cd backend
+python main.py
+```
+
+Visit `http://localhost:8000` to start trying on clothes!
+
+### 🔑 API Key Setup
+1. Get your API key from [Google AI Studio](https://aistudio.google.com/app/apikey)
+2. Create a `.env` file in the project root:
    ```
-   git clone https://github.com/yourusername/wardrobe-ai.git
-   cd wardrobe-ai
+   GEMINI_API_KEY=your-api-key-here
    ```
 
-2. **Set Up Virtual Environment**:
-   ```
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   ```
+---
 
-3. **Install Dependencies**:
-   ```
-   pip install pillow google-generativeai
-   ```
-   Note: Ensure custom modules (`config.py`, `image_utils.py`, `api_utils.py`) are present or implement them based on the script's imports.
+## 📁 Project Structure
 
-4. **Configure API**:
-   - In `config.py`, implement `get_client()` to return a Gemini API client instance (e.g., using `genai.GenerativeModel`).
-   - Add your API key: `genai.configure(api_key="YOUR_API_KEY")`.
+```
+wardrobe-ai/
+├── backend/
+│   ├── main.py              # FastAPI application
+│   ├── virtual_tryon.py     # Core AI processing
+│   ├── config.py            # Configuration management
+│   ├── image_utils.py       # Image processing utilities
+│   └── api_utils.py         # API helper functions
+├── frontend/
+│   ├── index.html           # Main application interface
+│   └── features.html        # Features showcase page
+├── requirements.txt         # Python dependencies
+└── README.md               # You are here!
+```
 
-## Usage
+---
 
-1. **Prepare Images**:
-   - Rename your person photo to "image1.jpg" (or similar) and clothing to "image2.jpg".
-   - Place them in the script's directory.
+## 🤝 Contributing
 
-2. **Run the Script**:
-   ```
-   python virtual_tryon.py
-   ```
-   - The script will load images, process them, and attempt generation using the specified models.
-   - Output: A new file "virtual_try_on_result.png" in the current directory.
+We welcome contributions! Here's how you can help make Wardrobe AI even better:
 
-3. **Example Output**:
-   - Console logs will show progress, model attempts, and success/failure messages.
-   - If successful: "Virtual try-on result saved as 'virtual_try_on_result.png'".
-   - If issues arise: Check for file not found errors or API failures.
+### 🎯 Ways to Contribute
+- 🐛 **Bug Reports**: Found an issue? Let us know!
+- 💡 **Feature Ideas**: Have a cool idea? We'd love to hear it!
+- 🔧 **Code Contributions**: Submit a PR with improvements
+- 📚 **Documentation**: Help improve our guides and docs
 
-## How It Works
+### 📋 Contribution Process
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-The core logic is in the `run_virtual_tryon()` function:
+---
 
-- **Image Loading**: Searches for "image1" and "image2" using `find_image_file()`, then validates/preprocesses with `validate_and_preprocess_image()`.
-- **API Prompt**: A fixed prompt instructs the AI to composite the clothing onto the person naturally.
-- **Model Iteration**: Loops through Gemini models, calling `make_api_request_with_retry()` until success.
-- **Response Handling**: Extracts the generated image from the API response and saves it using PIL.
+## 📊 Use Cases
 
-For customization:
-- Modify the `PROMPT` string for different try-on behaviors.
-- Extend models in the `MODELS` list if more become available.
+- 🛒 **E-commerce Integration**: Reduce return rates and increase customer confidence
+- 👗 **Fashion Tech**: Power next-generation styling applications
+- 📱 **Mobile Apps**: Create engaging shopping experiences
+- 🎨 **Prototyping**: Quickly test fashion and retail concepts
 
-## Limitations and Troubleshooting
+---
 
-- **API Dependencies**: Requires internet and a valid Gemini API key. Rate limits may apply.
-- **Image Quality**: Best results with clear, front-facing person photos and isolated clothing images.
-- **Errors**:
-  - "FileNotFoundError": Ensure images exist and are named correctly.
-  - API failures: Check your key, network, or model availability.
-  - No image generated: The response might contain text only; inspect the API output.
-- **Scalability**: This is a script-based prototype. For web integration, wrap it in a Flask/Django app.
+## 🔮 Future Roadmap
 
-## Contributing
+- [ ] Multiple clothing items support
+- [ ] Style recommendations based on body type
+- [ ] Social sharing capabilities
+- [ ] Mobile app development
+- [ ] AR/VR integration
 
-Contributions welcome! Fork the repo, add features (e.g., multi-clothing support, UI), and submit a pull request. Follow standard Python conventions.
+---
 
-## License
+<div align="center">
 
-MIT License. See [LICENSE](LICENSE) for details.
+**Built with ❤️ by [Isaiah Byrd](https://github.com/IsaiahByrd)**
+
+⭐ **Found this helpful? Give it a star!** ⭐
+
+[🌐 Live Demo](https://wardrobe-ai-git-main-isaiah-byrds-projects.vercel.app/) • [📧 Contact](mailto:your-email@example.com) • [🐛 Report Bug](https://github.com/IsaiahByrd/wardrobe-ai/issues)
+
+</div>
 
